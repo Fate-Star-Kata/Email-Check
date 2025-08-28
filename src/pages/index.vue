@@ -6,13 +6,13 @@
       <div class="text-center space-y-6 mb-8">
         <RevealMotion :delay="0">
           <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
-            赫兹系统
+            智能垃圾邮件检测系统
           </h1>
         </RevealMotion>
 
         <RevealMotion :delay="0.1">
           <p class="text-lg md:text-xl opacity-70">
-            项目介绍
+            基于深度学习的邮件安全防护
           </p>
         </RevealMotion>
 
@@ -113,14 +113,14 @@ const RevealMotion = defineComponent<RevealProps>({
   },
 });
 
-// 文案内容：保持中性，便于替换
+// 垃圾邮件检测系统功能特点
 const features = [
-  { title: "极简设计", desc: "去除干扰，聚焦信息与层次。" },
-  { title: "响应布局", desc: "桌面/移动端一致的体验。" },
-  { title: "即插即用", desc: "替换文字与链接即可上线。" },
-  { title: "轻量动画", desc: "只在需要处出现的动效。" },
-  { title: "DaisyUI 组件", desc: "开箱即用的优雅样式。" },
-  { title: "Tailwind 原子化", desc: "一致、可维护的样式体系。" },
+  { title: "AI智能检测", desc: "深度学习算法精准识别垃圾邮件。" },
+  { title: "实时防护", desc: "24小时不间断邮件安全监控。" },
+  { title: "多维分析", desc: "从内容、发件人、链接多角度分析。" },
+  { title: "历史记录", desc: "完整的检测历史和统计分析。" },
+  { title: "收藏管理", desc: "重要邮件分类收藏和标记。" },
+  { title: "数据可视化", desc: "直观的统计图表和趋势分析。" },
 ];
 </script>
 

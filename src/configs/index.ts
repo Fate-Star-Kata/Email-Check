@@ -38,49 +38,39 @@ export const defaultMenuItems: MenuItem[] = [
     hide: false,
   },
   {
-    id: 'knowledge',
-    label: '知识库',
-    href: '/user/knowledge',
+    id: 'dashboard',
+    label: 'menu.dashboard',
+    href: '/user/dashboard',
     icon: null,
+    hide: false,
   },
   {
-    id: 'templates',
-    label: 'menu.templates',
-    href: '/templates',
-    children: [
-      {
-        id: 'dashboard',
-        label: 'dashboard',
-        href: '/templates/dashboard'
-      },
-      {
-        id: 'analytics',
-        label: 'analytics',
-        href: '/templates/analytics'
-      },
-      {
-        id: 'knowledge',
-        label: 'knowledge',
-        href: '/templates/knowledge'
-      },
-      {
-        id: 'stats',
-        label: 'stats',
-        href: '/templates/stats'
-      },
-      {
-        id: 'websocket',
-        label: 'websocket',
-        href: '/templates/websocket'
-      },
-    ]
+    id: 'email-check',
+    label: 'menu.emailCheck',
+    href: '/user/email-check',
+    icon: null,
+    hide: false,
   },
   {
-    id: 'system_film',
-    label: 'menu.system_film',
-    href: '/user/system_film',
-    hide: true,
+    id: 'favorites',
+    label: 'menu.favorites',
+    href: '/user/favorites',
     icon: null,
+    hide: false,
+  },
+  {
+    id: 'history',
+    label: 'menu.history',
+    href: '/user/history',
+    icon: null,
+    hide: false,
+  },
+  {
+    id: 'statistics',
+    label: 'menu.statistics',
+    href: '/user/statistics',
+    icon: null,
+    hide: false,
   },
   {
     id: 'admin',

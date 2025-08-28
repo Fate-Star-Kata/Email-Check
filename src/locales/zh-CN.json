@@ -51,7 +51,11 @@
     "websocket": "websocket",
     "knowledge": "知识库",
     "templates": "模板",
-    "index": "首页"
+    "index": "首页",
+    "emailCheck": "邮件检测",
+    "favorites": "收藏管理",
+    "history": "历史记录",
+    "statistics": "检测统计"
   },
   "form": {
     "username": "用户名",
