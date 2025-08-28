@@ -51,7 +51,11 @@
     "websocket": "WebSocket",
     "knowledge": "ナレッジベース",
     "templates": "テンプレート",
-    "index": "インデックス"
+    "index": "インデックス",
+    "emailCheck": "メール検査",
+    "favorites": "お気に入り",
+    "history": "履歴",
+    "statistics": "統計"
   },
   "form": {
     "username": "ユーザー名",

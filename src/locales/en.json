@@ -51,7 +51,11 @@
     "websocket": "websocket",
     "knowledge": "Knowledge Base",
     "templates": "Templates",
-    "index": "index"
+    "index": "index",
+    "emailCheck": "Email Check",
+    "favorites": "Favorites",
+    "history": "History",
+    "statistics": "Statistics"
   },
   "form": {
     "username": "Username",
