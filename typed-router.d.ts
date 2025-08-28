@@ -40,14 +40,13 @@ declare module 'vue-router/auto-routes' {
     '/templates/knowledge': RouteRecordInfo<'/templates/knowledge', '/templates/knowledge', Record<never, never>, Record<never, never>>,
     '/templates/stats': RouteRecordInfo<'/templates/stats', '/templates/stats', Record<never, never>, Record<never, never>>,
     '/templates/websocket': RouteRecordInfo<'/templates/websocket', '/templates/websocket', Record<never, never>, Record<never, never>>,
-    '/user/dashboard': RouteRecordInfo<'/user/dashboard', '/user/dashboard', Record<never, never>, Record<never, never>>,
-    '/user/email-check': RouteRecordInfo<'/user/email-check', '/user/email-check', Record<never, never>, Record<never, never>>,
-    '/user/favorites': RouteRecordInfo<'/user/favorites', '/user/favorites', Record<never, never>, Record<never, never>>,
-    '/user/history': RouteRecordInfo<'/user/history', '/user/history', Record<never, never>, Record<never, never>, '/user/history/'>,
+    '/user/dashboard/': RouteRecordInfo<'/user/dashboard/', '/user/dashboard', Record<never, never>, Record<never, never>>,
+    '/user/email-check/': RouteRecordInfo<'/user/email-check/', '/user/email-check', Record<never, never>, Record<never, never>>,
+    '/user/favorites/': RouteRecordInfo<'/user/favorites/', '/user/favorites', Record<never, never>, Record<never, never>>,
     '/user/history/': RouteRecordInfo<'/user/history/', '/user/history', Record<never, never>, Record<never, never>>,
     '/user/knowledge/': RouteRecordInfo<'/user/knowledge/', '/user/knowledge', Record<never, never>, Record<never, never>>,
     '/user/notifications/': RouteRecordInfo<'/user/notifications/', '/user/notifications', Record<never, never>, Record<never, never>>,
-    '/user/statistics': RouteRecordInfo<'/user/statistics', '/user/statistics', Record<never, never>, Record<never, never>>,
+    '/user/statistics/': RouteRecordInfo<'/user/statistics/', '/user/statistics', Record<never, never>, Record<never, never>>,
     '/user/system_film/': RouteRecordInfo<'/user/system_film/', '/user/system_film', Record<never, never>, Record<never, never>>,
     '/userInfo/': RouteRecordInfo<'/userInfo/', '/userInfo', Record<never, never>, Record<never, never>>,
   }
@@ -151,21 +150,17 @@ declare module 'vue-router/auto-routes' {
       routes: '/templates/websocket'
       views: never
     }
-    'src/pages/user/dashboard.vue': {
-      routes: '/user/dashboard'
+    'src/pages/user/dashboard/index.vue': {
+      routes: '/user/dashboard/'
       views: never
     }
-    'src/pages/user/email-check.vue': {
-      routes: '/user/email-check'
+    'src/pages/user/email-check/index.vue': {
+      routes: '/user/email-check/'
       views: never
     }
-    'src/pages/user/favorites.vue': {
-      routes: '/user/favorites'
+    'src/pages/user/favorites/index.vue': {
+      routes: '/user/favorites/'
       views: never
-    }
-    'src/pages/user/history.vue': {
-      routes: '/user/history' | '/user/history/'
-      views: 'default'
     }
     'src/pages/user/history/index.vue': {
       routes: '/user/history/'
@@ -179,8 +174,8 @@ declare module 'vue-router/auto-routes' {
       routes: '/user/notifications/'
       views: never
     }
-    'src/pages/user/statistics.vue': {
-      routes: '/user/statistics'
+    'src/pages/user/statistics/index.vue': {
+      routes: '/user/statistics/'
       views: never
     }
     'src/pages/user/system_film/index.vue': {
