@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风险用户识别 - 智能垃圾邮件检测系统</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h2>管理员控制台</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html">仪表板</a></li>
+                <li><a href="user-management.html">用户管理</a></li>
+                <li><a href="detection-records.html">检测记录</a></li>
+                <li><a href="risk-users.html" class="active">风险用户</a></li>
+                <li><a href="../index.html" class="logout">退出</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <div class="page-header">
+                <h1>风险用户识别</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="scanRiskUsersBtn">扫描风险用户</button>
+                    <button class="btn btn-secondary" id="exportRiskReportBtn">导出风险报告</button>
+                </div>
+            </div>
+            
+            <!-- 风险等级概览 -->
+            <div class="risk-overview">
+                <div class="risk-level-card high">
+                    <div class="risk-icon">🔴</div>
+                    <div class="risk-content">
+                        <h3 id="highRiskCount">8</h3>
+                        <p>高风险用户</p>
+                        <small>需要立即处理</small>
+                    </div>
+                </div>
+                <div class="risk-level-card medium">
+                    <div class="risk-icon">🟡</div>
+                    <div class="risk-content">
+                        <h3 id="mediumRiskCount">23</h3>
+                        <p>中风险用户</p>
+                        <small>需要密切关注</small>
+                    </div>
+                </div>
+                <div class="risk-level-card low">
+                    <div class="risk-icon">🟢</div>
+                    <div class="risk-content">
+                        <h3 id="lowRiskCount">156</h3>
+                        <p>低风险用户</p>
+                        <small>正常监控</small>
+                    </div>
+                </div>
+                <div class="risk-level-card">
+                    <div class="risk-icon">📊</div>
+                    <div class="risk-content">
+                        <h3 id="totalRiskUsers">187</h3>
+                        <p>总风险用户</p>
+                        <small>占总用户 7.6%</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 风险分析工具 -->
+            <div class="risk-analysis-tools">
+                <h3>风险分析工具</h3>
+                <div class="analysis-controls">
+                    <div class="control-group">
+                        <label for="analysisType">分析类型</label>
+                        <select id="analysisType">
+                            <option value="behavior">行为分析</option>
+                            <option value="pattern">模式识别</option>
+                            <option value="frequency">频率分析</option>
+                            <option value="content">内容分析</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="timeRange">时间范围</label>
+                        <select id="timeRange">
+                            <option value="7">最近7天</option>
+                            <option value="30" selected>最近30天</option>
+                            <option value="90">最近90天</option>
+                            <option value="365">最近一年</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="riskThreshold">风险阈值</label>
+                        <select id="riskThreshold">
+                            <option value="0.3">低 (30%)</option>
+                            <option value="0.5" selected>中 (50%)</option>
+                            <option value="0.7">高 (70%)</option>
+                            <option value="0.9">极高 (90%)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="runAnalysisBtn">运行分析</button>
+                </div>
+            </div>
+            
+            <!-- 筛选和搜索 -->
+            <div class="filters-section">
+                <div class="search-box">
+                    <input type="text" id="riskUserSearch" placeholder="搜索用户（邮箱、姓名、ID）">
+                    <button class="btn btn-secondary" id="searchBtn">搜索</button>
+                </div>
+                <div class="filter-options">
+                    <select id="riskLevelFilter">
+                        <option value="">所有风险等级</option>
+                        <option value="high">高风险</option>
+                        <option value="medium">中风险</option>
+                        <option value="low">低风险</option>
+                    </select>
+                    <select id="statusFilter">
+                        <option value="">所有状态</option>
+                        <option value="active">活跃</option>
+                        <option value="monitoring">监控中</option>
+                        <option value="restricted">已限制</option>
+                        <option value="suspended">已暂停</option>
+                    </select>
+                    <select id="sortBy">
+                        <option value="risk_desc">按风险等级降序</option>
+                        <option value="risk_asc">按风险等级升序</option>
+                        <option value="activity_desc">按活动时间降序</option>
+                        <option value="detection_desc">按检测次数降序</option>
+                    </select>
+                    <button class="btn btn-secondary" id="resetFiltersBtn">重置筛选</button>
+                </div>
+            </div>
+            
+            <!-- 风险用户列表 -->
+            <div class="risk-users-table-container">
+                <table class="data-table" id="riskUsersTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllRiskUsers"></th>
+                            <th>用户信息</th>
+                            <th>风险等级</th>
+                            <th>风险评分</th>
+                            <th>主要风险因素</th>
+                            <th>检测次数</th>
+                            <th>垃圾邮件率</th>
+                            <th>最后活动</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="riskUsersTableBody">
+                        <!-- 动态加载风险用户数据 -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="pagination">
+                <button class="btn btn-secondary" id="prevPageBtn">上一页</button>
+                <span class="page-info" id="pageInfo">第 1 页，共 8 页</span>
+                <button class="btn btn-secondary" id="nextPageBtn">下一页</button>
+            </div>
+            
+            <!-- 批量操作 -->
+            <div class="batch-risk-actions">
+                <h3>批量风险管理</h3>
+                <div class="batch-controls">
+                    <div class="selected-info">
+                        <span id="selectedRiskUsersCount">0</span> 个用户已选择
+                    </div>
+                    <div class="batch-buttons">
+                        <button class="btn btn-warning" id="batchMonitorBtn">批量监控</button>
+                        <button class="btn btn-danger" id="batchRestrictBtn">批量限制</button>
+                        <button class="btn btn-secondary" id="batchNotifyBtn">批量通知</button>
+                        <button class="btn btn-primary" id="batchAnalyzeBtn">批量分析</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- 用户风险详情模态框 -->
+    <div class="modal hidden" id="riskUserModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>用户风险详情分析</h3>
+                <button class="close-btn" id="closeRiskUserModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="user-risk-profile">
+                    <div class="profile-header">
+                        <div class="user-avatar">
+                            <div class="avatar-placeholder" id="userAvatar">👤</div>
+                        </div>
+                        <div class="user-basic-info">
+                            <h4 id="userName"></h4>
+                            <p id="userEmail"></p>
+                            <span class="risk-badge" id="userRiskLevel"></span>
+                        </div>
+                        <div class="risk-score-display">
+                            <div class="score-circle" id="riskScoreCircle">
+                                <span id="riskScoreValue">0</span>
+                            </div>
+                            <p>风险评分</p>
+                        </div>
+                    </div>
+                    
+                    <div class="risk-details-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="factors">风险因素</button>
+                            <button class="tab-btn" data-tab="behavior">行为分析</button>
+                            <button class="tab-btn" data-tab="history">历史记录</button>
+                            <button class="tab-btn" data-tab="actions">处理建议</button>
+                        </div>
+                        
+                        <div class="tab-content" id="factorsTab">
+                            <h5>主要风险因素</h5>
+                            <div class="risk-factors-list" id="riskFactorsList">
+                                <!-- 动态加载风险因素 -->
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content hidden" id="behaviorTab">
+                            <h5>用户行为分析</h5>
+                            <div class="behavior-analysis" id="behaviorAnalysis">
+                                <!-- 动态加载行为分析 -->
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content hidden" id="historyTab">
+                            <h5>风险历史记录</h5>
+                            <div class="risk-history" id="riskHistory">
+                                <!-- 动态加载历史记录 -->
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content hidden" id="actionsTab">
+                            <h5>处理建议</h5>
+                            <div class="action-recommendations" id="actionRecommendations">
+                                <!-- 动态加载处理建议 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeModalBtn">关闭</button>
+                <button class="btn btn-warning" id="addMonitoringBtn">添加监控</button>
+                <button class="btn btn-danger" id="restrictUserBtn">限制用户</button>
+                <button class="btn btn-primary" id="sendWarningBtn">发送警告</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin.js"></script>
+</body>
+</html>

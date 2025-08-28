@@ -109,9 +109,6 @@ export const adminMenuItems: AdminHeader[] = [
     title: "用户管理",
     icon: "User",
     path: "/admin/userManage",
-    // children: [
-    //   { id: '2-1', title: '用户列表', icon: 'UserFilled', path: '/admin/userManage' },
-    // ]
   },
   {
     id: "4",
@@ -124,6 +121,18 @@ export const adminMenuItems: AdminHeader[] = [
     title: "知识管理",
     icon: "Document",
     path: "/admin/knowledge",
+  },
+  {
+    id: "5",
+    title: "历史管理",
+    icon: "Compass",
+    path: "/admin/detection-records",
+  },
+  {
+    id: "5",
+    title: "风险管理",
+    icon: "Warning",
+    path: "/admin/risk-users",
   },
   {
     id: "6",
@@ -183,13 +192,13 @@ export const adminMenuItems: AdminHeader[] = [
   {
     id: "11",
     title: "操作日志",
-    icon: "DocumentCopy",
+    icon: "CollectionTag",
     path: "/admin/log",
   },
   {
     id: "12",
     title: "系统配置",
-    icon: "Tools",
+    icon: "setting",
     path: "/admin/systemConfig",
   },
 ];

@@ -23,11 +23,15 @@ declare module 'vue-router/auto-routes' {
     '/admin/ai/': RouteRecordInfo<'/admin/ai/', '/admin/ai', Record<never, never>, Record<never, never>>,
     '/admin/Content/': RouteRecordInfo<'/admin/Content/', '/admin/Content', Record<never, never>, Record<never, never>>,
     '/admin/dashboard/': RouteRecordInfo<'/admin/dashboard/', '/admin/dashboard', Record<never, never>, Record<never, never>>,
+    '/admin/detection-records/': RouteRecordInfo<'/admin/detection-records/', '/admin/detection-records', Record<never, never>, Record<never, never>>,
+    '/admin/detection-records/DetailModal': RouteRecordInfo<'/admin/detection-records/DetailModal', '/admin/detection-records/DetailModal', Record<never, never>, Record<never, never>>,
     '/admin/files/': RouteRecordInfo<'/admin/files/', '/admin/files', Record<never, never>, Record<never, never>>,
     '/admin/knowledge/': RouteRecordInfo<'/admin/knowledge/', '/admin/knowledge', Record<never, never>, Record<never, never>>,
     '/admin/log/': RouteRecordInfo<'/admin/log/', '/admin/log', Record<never, never>, Record<never, never>>,
     '/admin/notice/': RouteRecordInfo<'/admin/notice/', '/admin/notice', Record<never, never>, Record<never, never>>,
     '/admin/profile/': RouteRecordInfo<'/admin/profile/', '/admin/profile', Record<never, never>, Record<never, never>>,
+    '/admin/risk-users/': RouteRecordInfo<'/admin/risk-users/', '/admin/risk-users', Record<never, never>, Record<never, never>>,
+    '/admin/risk-users/UserDetailModal': RouteRecordInfo<'/admin/risk-users/UserDetailModal', '/admin/risk-users/UserDetailModal', Record<never, never>, Record<never, never>>,
     '/admin/settings/': RouteRecordInfo<'/admin/settings/', '/admin/settings', Record<never, never>, Record<never, never>>,
     '/admin/systemConfig/': RouteRecordInfo<'/admin/systemConfig/', '/admin/systemConfig', Record<never, never>, Record<never, never>>,
     '/admin/SystemMonitoring/': RouteRecordInfo<'/admin/SystemMonitoring/', '/admin/SystemMonitoring', Record<never, never>, Record<never, never>>,
@@ -78,6 +82,14 @@ declare module 'vue-router/auto-routes' {
       routes: '/admin/dashboard/'
       views: never
     }
+    'src/pages/admin/detection-records/index.vue': {
+      routes: '/admin/detection-records/'
+      views: never
+    }
+    'src/pages/admin/detection-records/DetailModal.vue': {
+      routes: '/admin/detection-records/DetailModal'
+      views: never
+    }
     'src/pages/admin/files/index.vue': {
       routes: '/admin/files/'
       views: never
@@ -96,6 +108,14 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/admin/profile/index.vue': {
       routes: '/admin/profile/'
+      views: never
+    }
+    'src/pages/admin/risk-users/index.vue': {
+      routes: '/admin/risk-users/'
+      views: never
+    }
+    'src/pages/admin/risk-users/UserDetailModal.vue': {
+      routes: '/admin/risk-users/UserDetailModal'
       views: never
     }
     'src/pages/admin/settings/index.vue': {

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员仪表板 - 智能垃圾邮件检测系统</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h2>管理员控制台</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html" class="active">仪表板</a></li>
+                <li><a href="user-management.html">用户管理</a></li>
+                <li><a href="detection-records.html">检测记录</a></li>
+                <li><a href="risk-users.html">风险用户</a></li>
+                <li><a href="../index.html" class="logout">退出</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <div class="page-header">
+                <h1>系统概览</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="refreshDataBtn">刷新数据</button>
+                    <button class="btn btn-secondary" id="exportReportBtn">导出报告</button>
+                </div>
+            </div>
+            
+            <!-- 系统状态卡片 -->
+            <div class="system-status">
+                <div class="status-card">
+                    <div class="status-icon online">🟢</div>
+                    <div class="status-content">
+                        <h3>系统状态</h3>
+                        <p>正常运行</p>
+                        <small>运行时间: 15天 8小时</small>
+                    </div>
+                </div>
+                <div class="status-card">
+                    <div class="status-icon">⚡</div>
+                    <div class="status-content">
+                        <h3>AI模型状态</h3>
+                        <p>正常工作</p>
+                        <small>准确率: 96.8%</small>
+                    </div>
+                </div>
+                <div class="status-card">
+                    <div class="status-icon">💾</div>
+                    <div class="status-content">
+                        <h3>数据库状态</h3>
+                        <p>连接正常</p>
+                        <small>使用率: 68%</small>
+                    </div>
+                </div>
+                <div class="status-card">
+                    <div class="status-icon">📊</div>
+                    <div class="status-content">
+                        <h3>API状态</h3>
+                        <p>响应正常</p>
+                        <small>平均响应: 0.8s</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 关键指标 -->
+            <div class="key-metrics">
+                <div class="metric-card">
+                    <div class="metric-icon">👥</div>
+                    <div class="metric-content">
+                        <h3 id="totalUsers">2,456</h3>
+                        <p>总用户数</p>
+                        <span class="metric-change positive">+5.2%</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📧</div>
+                    <div class="metric-content">
+                        <h3 id="totalDetections">45,678</h3>
+                        <p>总检测次数</p>
+                        <span class="metric-change positive">+12.8%</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🛡️</div>
+                    <div class="metric-content">
+                        <h3 id="spamBlocked">3,245</h3>
+                        <p>拦截垃圾邮件</p>
+                        <span class="metric-change negative">-2.1%</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">⚠️</div>
+                    <div class="metric-content">
+                        <h3 id="riskUsers">23</h3>
+                        <p>风险用户</p>
+                        <span class="metric-change positive">+15.0%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 图表区域 -->
+            <div class="dashboard-charts">
+                <div class="chart-section">
+                    <div class="chart-container">
+                        <h3>检测趋势 (最近30天)</h3>
+                        <canvas id="detectionTrendChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-row">
+                    <div class="chart-container half">
+                        <h3>用户活跃度</h3>
+                        <canvas id="userActivityChart"></canvas>
+                    </div>
+                    <div class="chart-container half">
+                        <h3>检测结果分布</h3>
+                        <canvas id="detectionResultChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 最近活动 -->
+            <div class="recent-activities">
+                <h3>最近系统活动</h3>
+                <div class="activity-list" id="recentActivities">
+                    <!-- 动态加载最近活动 -->
+                </div>
+            </div>
+            
+            <!-- 系统警报 -->
+            <div class="system-alerts">
+                <h3>系统警报</h3>
+                <div class="alert-list" id="systemAlerts">
+                    <!-- 动态加载系统警报 -->
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin.js"></script>
+</body>
+</html>

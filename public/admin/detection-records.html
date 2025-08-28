@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>检测记录管理 - 智能垃圾邮件检测系统</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h2>管理员控制台</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html">仪表板</a></li>
+                <li><a href="user-management.html">用户管理</a></li>
+                <li><a href="detection-records.html" class="active">检测记录</a></li>
+                <li><a href="risk-users.html">风险用户</a></li>
+                <li><a href="../index.html" class="logout">退出</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <div class="page-header">
+                <h1>检测记录管理</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="analyzeRecordsBtn">分析记录</button>
+                    <button class="btn btn-secondary" id="exportRecordsBtn">导出记录</button>
+                </div>
+            </div>
+            
+            <!-- 统计概览 -->
+            <div class="records-overview">
+                <div class="overview-stat">
+                    <h4>今日检测</h4>
+                    <span class="stat-number" id="todayDetections">1,234</span>
+                </div>
+                <div class="overview-stat">
+                    <h4>垃圾邮件</h4>
+                    <span class="stat-number spam" id="spamDetections">89</span>
+                </div>
+                <div class="overview-stat">
+                    <h4>正常邮件</h4>
+                    <span class="stat-number safe" id="safeDetections">1,145</span>
+                </div>
+                <div class="overview-stat">
+                    <h4>平均准确率</h4>
+                    <span class="stat-number" id="avgAccuracy">96.8%</span>
+                </div>
+            </div>
+            
+            <!-- 高级筛选 -->
+            <div class="advanced-filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="userFilter">用户筛选</label>
+                        <input type="text" id="userFilter" placeholder="输入用户邮箱或ID">
+                    </div>
+                    <div class="filter-group">
+                        <label for="resultFilter">检测结果</label>
+                        <select id="resultFilter">
+                            <option value="">所有结果</option>
+                            <option value="spam">垃圾邮件</option>
+                            <option value="safe">安全邮件</option>
+                            <option value="suspicious">可疑邮件</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="confidenceFilter">置信度范围</label>
+                        <select id="confidenceFilter">
+                            <option value="">所有范围</option>
+                            <option value="high">高 (90-100%)</option>
+                            <option value="medium">中 (70-89%)</option>
+                            <option value="low">低 (0-69%)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="dateRangeFilter">时间范围</label>
+                        <select id="dateRangeFilter">
+                            <option value="today">今天</option>
+                            <option value="week">本周</option>
+                            <option value="month" selected>本月</option>
+                            <option value="quarter">本季度</option>
+                            <option value="year">今年</option>
+                            <option value="custom">自定义</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-row custom-date hidden" id="customDateRange">
+                    <div class="filter-group">
+                        <label for="startDate">开始日期</label>
+                        <input type="date" id="startDate">
+                    </div>
+                    <div class="filter-group">
+                        <label for="endDate">结束日期</label>
+                        <input type="date" id="endDate">
+                    </div>
+                    <div class="filter-group">
+                        <button class="btn btn-primary" id="applyDateRangeBtn">应用</button>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-secondary" id="resetFiltersBtn">重置筛选</button>
+                    <button class="btn btn-primary" id="applyFiltersBtn">应用筛选</button>
+                </div>
+            </div>
+            
+            <!-- 检测记录表格 -->
+            <div class="records-table-container">
+                <table class="data-table" id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllRecords"></th>
+                            <th>记录ID</th>
+                            <th>用户</th>
+                            <th>邮件主题</th>
+                            <th>发件人</th>
+                            <th>检测结果</th>
+                            <th>置信度</th>
+                            <th>检测时间</th>
+                            <th>处理时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody">
+                        <!-- 动态加载检测记录 -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页控制 -->
+            <div class="pagination-controls">
+                <div class="pagination-info">
+                    <span>显示第 <span id="startRecord">1</span> - <span id="endRecord">20</span> 条，共 <span id="totalRecords">1,234</span> 条记录</span>
+                </div>
+                <div class="pagination">
+                    <button class="btn btn-secondary" id="firstPageBtn">首页</button>
+                    <button class="btn btn-secondary" id="prevPageBtn">上一页</button>
+                    <span class="page-info" id="pageInfo">第 1 页，共 62 页</span>
+                    <button class="btn btn-secondary" id="nextPageBtn">下一页</button>
+                    <button class="btn btn-secondary" id="lastPageBtn">末页</button>
+                </div>
+                <div class="page-size-selector">
+                    <label for="pageSizeSelect">每页显示:</label>
+                    <select id="pageSizeSelect">
+                        <option value="20" selected>20 条</option>
+                        <option value="50">50 条</option>
+                        <option value="100">100 条</option>
+                        <option value="200">200 条</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- 批量操作 -->
+            <div class="batch-operations">
+                <h3>批量操作</h3>
+                <div class="batch-controls">
+                    <div class="selected-info">
+                        <span id="selectedRecordsCount">0</span> 条记录已选择
+                    </div>
+                    <div class="batch-buttons">
+                        <button class="btn btn-primary" id="batchAnalyzeBtn">批量分析</button>
+                        <button class="btn btn-warning" id="batchReprocessBtn">重新处理</button>
+                        <button class="btn btn-secondary" id="batchExportBtn">批量导出</button>
+                        <button class="btn btn-danger" id="batchDeleteBtn">批量删除</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- 记录详情模态框 -->
+    <div class="modal hidden" id="recordModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>检测记录详情</h3>
+                <button class="close-btn" id="closeRecordModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="record-details">
+                    <div class="detail-section">
+                        <h4>基本信息</h4>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <label>记录ID:</label>
+                                <span id="recordId"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>用户:</label>
+                                <span id="recordUser"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>检测时间:</label>
+                                <span id="recordTime"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>处理时间:</label>
+                                <span id="recordProcessTime"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>邮件信息</h4>
+                        <div class="email-info">
+                            <div class="info-item">
+                                <label>主题:</label>
+                                <span id="emailSubject"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>发件人:</label>
+                                <span id="emailSender"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>内容:</label>
+                                <div id="emailContent" class="email-content-display"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>检测结果</h4>
+                        <div class="detection-result">
+                            <div class="result-item">
+                                <label>结果:</label>
+                                <span id="detectionResult" class="result-badge"></span>
+                            </div>
+                            <div class="result-item">
+                                <label>置信度:</label>
+                                <div class="confidence-display">
+                                    <span id="confidenceScore"></span>
+                                    <div class="confidence-bar">
+                                        <div class="confidence-fill" id="confidenceFill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="result-item">
+                                <label>风险因素:</label>
+                                <ul id="riskFactorsList"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>AI分析详情</h4>
+                        <div class="ai-analysis" id="aiAnalysisDetails">
+                            <!-- 动态加载AI分析详情 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeModalBtn">关闭</button>
+                <button class="btn btn-warning" id="reprocessRecordBtn">重新处理</button>
+                <button class="btn btn-primary" id="exportRecordBtn">导出记录</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin.js"></script>
+</body>
+</html>
