@@ -12,7 +12,7 @@ import type {
  */
 export function getUserDashboard(): Promise<BaseResponse<UserDashboardData>> {
   return serviceAxios({
-    url: '/user/dashboard/',
+    url: '/mail/dashboard/',
     method: 'get',
   })
 }

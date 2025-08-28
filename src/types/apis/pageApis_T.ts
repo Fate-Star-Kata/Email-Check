@@ -2,24 +2,32 @@
 
 // 基础响应类型
 export interface BaseResponse<T = any> {
+  msg: string
+  code: number
   success: boolean
   data: T
 }
 
 // 分页响应类型
 export interface PaginatedResponse<T> {
-  records?: T[]
-  favorites?: T[]
+  records: any
   total: number
-  page: number
-  page_size: number
+  code: number
+  msg: string | null
+  data: {
+    total: number
+    page: number
+    page_size: number
+    records?: T[]
+    favorites?: T[]
+  }
 }
 
 // 邮件检测相关类型
 export interface EmailDetectionRequest {
   email_content: string
-  sender_email?: string
-  subject?: string
+  email_sender?: string
+  email_subject?: string
 }
 
 export interface FileDetectionRequest {
@@ -28,9 +36,11 @@ export interface FileDetectionRequest {
 }
 
 export interface DetectionResult {
-  detection_result: 'spam' | 'legitimate'
+  confidence: number
+  result: string
+  detection_result: 'spam' | 'normal'
   confidence_score: number
-  risk_factors: string[]
+  risk_factors?: string[]
   record_id: number
   file_info?: {
     filename: string
@@ -67,15 +77,29 @@ export interface HistoryRecord {
   created_at: string
   sender_email: string
   subject: string
+  isFavorite: boolean
 }
 
-export interface HistoryDetailRecord extends HistoryRecord {
+export interface HistoryDetailRecord {
+  id: number
+  user: string
+  email_subject: string
+  email_sender: string
+  email_content: string
+  input_type: string
+  input_type_display: string
+  file_name: string
+  detection_result: string
+  detection_result_display: string
+  confidence_score: number
   risk_factors: string[]
-  file_path: string
-  user_feedback: {
-    feedback_type: string
-    comments: string
-  }
+  user_feedback: string
+  user_feedback_display: string
+  created_at: string
+  updated_at: string
+  content: string
+  sender: string
+  subject: string
 }
 
 // 收藏相关类型
@@ -84,46 +108,47 @@ export interface FavoriteQueryParams {
   page_size?: number
 }
 
+// 检测记录信息
+export interface DetectionRecord {
+  id: number
+  email_subject: string
+  email_sender: string
+  detection_result: string
+  detection_result_display: string
+  confidence_score: number
+  created_at: string
+}
+
+// 收藏记录
 export interface FavoriteRecord {
   id: number
-  record: {
-    id: number
-    subject: string
-    sender_email: string
-    detection_result: string
-  }
+  user: string
+  detection_record: DetectionRecord
+  note: string
   created_at: string
-  notes: string
+  subject: string
+  sender: string
+  content: string
 }
 
 export interface AddFavoriteRequest {
   record_id: number
-  notes?: string
+  note?: string
 }
 
 // 用户仪表板类型
 export interface UserDashboardData {
-  user_info: {
-    username: string
-    email: string
-    join_date: string
-  }
-  statistics: {
-    total_detections: number
-    spam_detected: number
-    legitimate_detected: number
-    accuracy_rate: number
-  }
+  total_checks: number
+  spam_blocked: number
+  favorite_emails: number
+  accuracy_rate: number
   recent_detections: {
     id: number
-    subject: string
+    email_subject: string
+    email_sender: string
     detection_result: string
+    confidence_score: number
     created_at: string
-  }[]
-  favorite_emails: {
-    id: number
-    subject: string
-    notes: string
   }[]
 }
 

@@ -6,7 +6,8 @@ import type {
   HistoryRecord,
   HistoryDetailRecord,
   FeedbackRequest,
-  FeedbackResponse
+  FeedbackResponse,
+  AddFavoriteRequest
 } from '@/types/apis/pageApis_T'
 
 /**
@@ -27,7 +28,7 @@ export function getDetectionHistory(params: HistoryQueryParams): Promise<BaseRes
  */
 export function getHistoryDetail(recordId: number): Promise<BaseResponse<HistoryDetailRecord>> {
   return serviceAxios({
-    url: `/history/${recordId}/`,
+    url: `/mail/history/${recordId}/`,
     method: 'get',
   })
 }
@@ -74,7 +75,7 @@ export function exportHistory(params?: HistoryQueryParams): Promise<BaseResponse
  */
 export function deleteHistoryRecord(recordId: number): Promise<BaseResponse<any>> {
   return serviceAxios({
-    url: `/history/${recordId}/`,
+    url: `/mail/history/${recordId}/`,
     method: 'delete',
   })
 }
@@ -88,5 +89,28 @@ export function batchDeleteHistory(recordIds: number[]): Promise<BaseResponse<an
     url: '/mail/history/batch-delete/',
     method: 'post',
     data: { record_ids: recordIds },
+  })
+}
+
+/**
+ * 添加收藏
+ * 将检测记录添加到用户收藏列表
+ */
+export function addFavorite(data: AddFavoriteRequest): Promise<BaseResponse<any>> {
+  return serviceAxios({
+    url: '/mail/favorites/',
+    method: 'post',
+    data,
+  })
+}
+
+/**
+ * 通过记录ID删除收藏
+ * 根据检测记录ID删除对应的收藏记录
+ */
+export function removeFavoriteByRecordId(recordId: number): Promise<BaseResponse<any>> {
+  return serviceAxios({
+    url: `/mail/favorites/by-record/${recordId}/`,
+    method: 'delete',
   })
 }

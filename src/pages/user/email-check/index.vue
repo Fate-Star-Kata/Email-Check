@@ -10,52 +10,34 @@
         <p class="text-base-content/70">智能识别垃圾邮件，保护您的邮箱安全</p>
       </div>
 
-      <!-- 检测方式选择 -->
-      <div class="tabs tabs-boxed mb-6 bg-base-200">
-        <a class="tab" :class="{ 'tab-active': activeTab === 'text' }" @click="activeTab = 'text'">文本检测</a>
-        <a class="tab" :class="{ 'tab-active': activeTab === 'file' }" @click="activeTab = 'file'">文件上传</a>
-        <a class="tab" :class="{ 'tab-active': activeTab === 'batch' }" @click="activeTab = 'batch'">批量检测</a>
-      </div>
-
       <!-- 文本检测 -->
-      <div v-if="activeTab === 'text'" class="card bg-base-200 shadow-sm mb-6">
+      <div class="card bg-base-200 shadow-sm mb-6">
         <div class="card-body">
           <h2 class="card-title mb-4">邮件内容检测</h2>
           <div class="space-y-4">
             <div>
               <label class="label">
-                <span class="label-text">邮件主题</span>
+                <span class="label-text">邮件主题（必填）</span>
               </label>
-              <input 
-                type="text" 
-                class="input input-bordered w-full" 
-                placeholder="请输入邮件主题"
-                v-model="emailData.subject"
-              />
+              <input type="text" class="input input-bordered w-full" placeholder="请输入邮件主题（必填）"
+                v-model="emailData.subject" />
             </div>
             <div>
               <label class="label">
-                <span class="label-text">发件人</span>
+                <span class="label-text">发件人（必填）</span>
               </label>
-              <input 
-                type="email" 
-                class="input input-bordered w-full" 
-                placeholder="请输入发件人邮箱"
-                v-model="emailData.sender"
-              />
+              <input type="email" class="input input-bordered w-full" placeholder="请输入发件人邮箱（必填）"
+                v-model="emailData.sender" />
             </div>
             <div>
               <label class="label">
-                <span class="label-text">邮件内容</span>
+                <span class="label-text">邮件内容（必填）</span>
               </label>
-              <textarea 
-                class="textarea textarea-bordered w-full" 
-                placeholder="请粘贴或输入邮件内容..."
-                rows="8"
-                v-model="emailData.content"
-              ></textarea>
+              <textarea class="textarea textarea-bordered w-full" placeholder="请粘贴或输入邮件内容（必填）..." rows="8"
+                v-model="emailData.content"></textarea>
             </div>
-            <button class="btn btn-primary w-full" @click="checkEmail" :disabled="isChecking">
+            <button class="btn btn-primary w-full" @click="checkEmail"
+              :disabled="isChecking || !emailData.subject.trim() || !emailData.sender.trim() || !emailData.content.trim()">
               <span v-if="isChecking" class="loading loading-spinner"></span>
               {{ isChecking ? '检测中...' : '开始检测' }}
             </button>
@@ -63,68 +45,9 @@
         </div>
       </div>
 
-      <!-- 文件上传 -->
-      <div v-if="activeTab === 'file'" class="card bg-base-200 shadow-sm mb-6">
-        <div class="card-body">
-          <h2 class="card-title mb-4">文件上传检测</h2>
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-base-300 rounded-lg p-8 text-center">
-              <div class="text-4xl mb-4">📁</div>
-              <p class="mb-4">拖拽文件到此处或点击选择文件</p>
-              <input 
-                type="file" 
-                class="file-input file-input-bordered w-full max-w-xs" 
-                accept=".eml,.msg,.txt"
-                @change="handleFileUpload"
-              />
-              <p class="text-sm text-base-content/70 mt-2">支持 .eml, .msg, .txt 格式</p>
-            </div>
-            <div v-if="uploadedFile" class="alert alert-info">
-              <span>已选择文件: {{ uploadedFile.name }}</span>
-            </div>
-            <button class="btn btn-primary w-full" @click="checkFile" :disabled="!uploadedFile || isChecking">
-              <span v-if="isChecking" class="loading loading-spinner"></span>
-              {{ isChecking ? '检测中...' : '开始检测' }}
-            </button>
-          </div>
-        </div>
-      </div>
 
-      <!-- 批量检测 -->
-      <div v-if="activeTab === 'batch'" class="card bg-base-200 shadow-sm mb-6">
-        <div class="card-body">
-          <h2 class="card-title mb-4">批量检测</h2>
-          <div class="space-y-4">
-            <div class="alert alert-info">
-              <span>批量检测功能可以同时处理多个邮件文件，提高检测效率</span>
-            </div>
-            <div class="border-2 border-dashed border-base-300 rounded-lg p-8 text-center">
-              <div class="text-4xl mb-4">📂</div>
-              <p class="mb-4">选择多个邮件文件进行批量检测</p>
-              <input 
-                type="file" 
-                class="file-input file-input-bordered w-full max-w-xs" 
-                accept=".eml,.msg,.txt"
-                multiple
-                @change="handleBatchUpload"
-              />
-            </div>
-            <div v-if="batchFiles.length > 0" class="space-y-2">
-              <p class="font-medium">已选择 {{ batchFiles.length }} 个文件:</p>
-              <div class="max-h-32 overflow-y-auto">
-                <div v-for="(file, index) in batchFiles" :key="index" class="flex items-center justify-between p-2 bg-base-100 rounded">
-                  <span class="text-sm">{{ file.name }}</span>
-                  <button class="btn btn-ghost btn-xs" @click="removeBatchFile(index)">移除</button>
-                </div>
-              </div>
-            </div>
-            <button class="btn btn-primary w-full" @click="checkBatch" :disabled="batchFiles.length === 0 || isChecking">
-              <span v-if="isChecking" class="loading loading-spinner"></span>
-              {{ isChecking ? '检测中...' : '开始批量检测' }}
-            </button>
-          </div>
-        </div>
-      </div>
+
+
 
       <!-- 检测结果 -->
       <div v-if="checkResult" class="card bg-base-200 shadow-sm">
@@ -155,7 +78,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="card bg-base-100">
                 <div class="card-body">
                   <h4 class="font-bold mb-2">建议操作</h4>
@@ -184,9 +107,8 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-
-// 当前激活的标签
-const activeTab = ref('text')
+import { detectEmailText } from '@/api/pagesApi/email-check'
+import type { EmailDetectionRequest } from '@/types/apis/pageApis_T'
 
 // 检测状态
 const isChecking = ref(false)
@@ -198,115 +120,81 @@ const emailData = reactive({
   content: ''
 })
 
-// 上传的文件
-const uploadedFile = ref<File | null>(null)
-const batchFiles = ref<File[]>([])
-
 // 检测结果
 const checkResult = ref<any>(null)
 
-// 文件上传处理
-const handleFileUpload = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  if (target.files && target.files[0]) {
-    uploadedFile.value = target.files[0]
-  }
-}
 
-// 批量文件上传处理
-const handleBatchUpload = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  if (target.files) {
-    batchFiles.value = Array.from(target.files)
-  }
-}
 
-// 移除批量文件
-const removeBatchFile = (index: number) => {
-  batchFiles.value.splice(index, 1)
+// 邮箱格式验证
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
 }
 
 // 邮件检测
 const checkEmail = async () => {
+  // 验证必填字段
+  if (!emailData.subject.trim()) {
+    alert('请输入邮件主题')
+    return
+  }
+
+  if (!emailData.sender.trim()) {
+    alert('请输入发件人邮箱')
+    return
+  }
+
+  if (!validateEmail(emailData.sender)) {
+    alert('请输入有效的邮箱格式')
+    return
+  }
+
   if (!emailData.content.trim()) {
     alert('请输入邮件内容')
     return
   }
-  
+
   isChecking.value = true
-  
-  // 模拟API调用
-  setTimeout(() => {
-    checkResult.value = {
-      isSpam: Math.random() > 0.7,
-      confidence: Math.floor(Math.random() * 30) + 70,
-      risks: [
-        { type: 'sender', name: '发件人信誉', level: '低' },
-        { type: 'content', name: '内容分析', level: '中' },
-        { type: 'links', name: '链接检查', level: '高' }
-      ],
-      suggestions: [
-        '建议验证发件人身份',
-        '谨慎点击邮件中的链接',
-        '不要下载未知附件'
-      ]
+
+  try {
+    const requestData: EmailDetectionRequest = {
+      email_subject: emailData.subject,
+      email_sender: emailData.sender,
+      email_content: emailData.content
     }
+
+    const response = await detectEmailText(requestData)
+
+    if (response.code === 200 && response.data) {
+      const result = response.data
+      checkResult.value = {
+        isSpam: result.result === 'spam',
+        confidence: Math.round(result.confidence * 100),
+        risks: [
+          { type: 'sender', name: '发件人信誉', level: result.confidence > 0.8 ? '高' : result.confidence > 0.5 ? '中' : '低' },
+          { type: 'content', name: '内容分析', level: result.result === 'spam' ? '高' : '低' }
+        ],
+        suggestions: result.result === 'spam' ? [
+          '该邮件被识别为垃圾邮件',
+          '建议谨慎处理此邮件',
+          '不要点击邮件中的可疑链接'
+        ] : [
+          '该邮件被识别为正常邮件',
+          '邮件内容看起来安全'
+        ]
+      }
+    } else {
+      alert('检测失败，请稍后重试')
+    }
+  } catch (error) {
+    console.error('邮件检测失败:', error)
+    alert('检测失败，请稍后重试')
+  } finally {
     isChecking.value = false
-  }, 2000)
+  }
 }
 
-// 文件检测
-const checkFile = async () => {
-  if (!uploadedFile.value) {
-    alert('请选择文件')
-    return
-  }
-  
-  isChecking.value = true
-  
-  // 模拟API调用
-  setTimeout(() => {
-    checkResult.value = {
-      isSpam: Math.random() > 0.6,
-      confidence: Math.floor(Math.random() * 40) + 60,
-      risks: [
-        { type: 'file', name: '文件格式', level: '低' },
-        { type: 'content', name: '内容分析', level: '中' }
-      ],
-      suggestions: [
-        '文件检测完成',
-        '建议定期更新病毒库'
-      ]
-    }
-    isChecking.value = false
-  }, 3000)
-}
 
-// 批量检测
-const checkBatch = async () => {
-  if (batchFiles.value.length === 0) {
-    alert('请选择文件')
-    return
-  }
-  
-  isChecking.value = true
-  
-  // 模拟API调用
-  setTimeout(() => {
-    checkResult.value = {
-      isSpam: false,
-      confidence: 85,
-      risks: [
-        { type: 'batch', name: '批量处理', level: '低' }
-      ],
-      suggestions: [
-        `成功处理 ${batchFiles.value.length} 个文件`,
-        '所有文件检测完成'
-      ]
-    }
-    isChecking.value = false
-  }, 4000)
-}
 
 // 获取结果警告样式
 const getResultAlertClass = (isSpam: boolean) => {
@@ -339,8 +227,4 @@ const reportFeedback = () => {
 }
 </script>
 
-<style scoped>
-.tab-active {
-  @apply bg-primary text-primary-content;
-}
-</style>
+<style scoped></style>

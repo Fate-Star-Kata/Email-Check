@@ -13,7 +13,7 @@ import type {
  */
 export function getFavorites(params?: FavoriteQueryParams): Promise<PaginatedResponse<FavoriteRecord>> {
   return serviceAxios({
-    url: '/favorites/',
+    url: '/mail/favorites/',
     method: 'get',
     params,
   })
@@ -25,7 +25,7 @@ export function getFavorites(params?: FavoriteQueryParams): Promise<PaginatedRes
  */
 export function addFavorite(data: AddFavoriteRequest): Promise<BaseResponse<FavoriteRecord>> {
   return serviceAxios({
-    url: '/favorites/',
+    url: '/mail/favorites/',
     method: 'post',
     data,
   })
@@ -37,7 +37,7 @@ export function addFavorite(data: AddFavoriteRequest): Promise<BaseResponse<Favo
  */
 export function deleteFavorite(favoriteId: number): Promise<BaseResponse<any>> {
   return serviceAxios({
-    url: `/favorites/${favoriteId}/`,
+    url: `/mail/favorites/${favoriteId}/`,
     method: 'delete',
   })
 }
@@ -48,7 +48,7 @@ export function deleteFavorite(favoriteId: number): Promise<BaseResponse<any>> {
  */
 export function batchDeleteFavorites(favoriteIds: number[]): Promise<BaseResponse<any>> {
   return serviceAxios({
-    url: '/favorites/batch-delete/',
+    url: '/mail/favorites/batch-delete/',
     method: 'post',
     data: { favorite_ids: favoriteIds },
   })
@@ -60,7 +60,7 @@ export function batchDeleteFavorites(favoriteIds: number[]): Promise<BaseRespons
  */
 export function exportFavorites(favoriteIds?: number[]): Promise<BaseResponse<any>> {
   return serviceAxios({
-    url: '/favorites/export/',
+    url: '/mail/favorites/export/',
     method: 'post',
     data: favoriteIds ? { favorite_ids: favoriteIds } : {},
     responseType: 'blob'
