@@ -124,9 +124,9 @@
         <div class="card bg-base-200 shadow-xl mb-8">
           <div class="card-body">
             <h2 class="card-title mb-4">详细统计报告</h2>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto max-h-80 overflow-y-auto">
               <table class="table table-zebra w-full">
-                <thead>
+                <thead class="sticky top-0 bg-base-200">
                   <tr>
                     <th>日期</th>
                     <th>总检测数</th>
@@ -137,7 +137,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="stat in dailyStats" :key="stat.date">
+                  <tr v-for="stat in dailyStats.slice(0, 10)" :key="stat.date">
                     <td>{{ formatDate(stat.date) }}</td>
                     <td>{{ stat.total_detections }}</td>
                     <td class="text-error">{{ stat.spam_count }}</td>
