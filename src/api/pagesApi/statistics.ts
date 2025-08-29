@@ -9,11 +9,10 @@ import type {
  * 获取用户统计信息
  * 获取用户的检测统计数据，支持时间范围筛选
  */
-export function getUserStatistics(params: UserStatisticsParams): Promise<BaseResponse<UserStatisticsData>> {
+export function getUserStatistics(): Promise<BaseResponse<UserStatisticsData>> {
   return serviceAxios({
-    url: '/user/statistics/',
+    url: '/mail/statistics/',
     method: 'get',
-    params,
   })
 }
 
@@ -23,7 +22,7 @@ export function getUserStatistics(params: UserStatisticsParams): Promise<BaseRes
  */
 export function exportStatisticsReport(params: UserStatisticsParams): Promise<BaseResponse<any>> {
   return serviceAxios({
-    url: '/user/statistics/export/',
+    url: '/mail/statistics/export/',
     method: 'get',
     params,
     responseType: 'blob'
@@ -36,7 +35,7 @@ export function exportStatisticsReport(params: UserStatisticsParams): Promise<Ba
  */
 export function getDetectionTrend(params: UserStatisticsParams): Promise<BaseResponse<any>> {
   return serviceAxios({
-    url: '/user/statistics/trend/',
+    url: '/mail/statistics/trend/',
     method: 'get',
     params,
   })
@@ -48,7 +47,7 @@ export function getDetectionTrend(params: UserStatisticsParams): Promise<BaseRes
  */
 export function getRiskFactorsStats(params: UserStatisticsParams): Promise<BaseResponse<any>> {
   return serviceAxios({
-    url: '/user/statistics/risk-factors/',
+    url: '/mail/statistics/risk-factors/',
     method: 'get',
     params,
   })
@@ -60,7 +59,7 @@ export function getRiskFactorsStats(params: UserStatisticsParams): Promise<BaseR
  */
 export function getAccuracyTrend(params: UserStatisticsParams): Promise<BaseResponse<any>> {
   return serviceAxios({
-    url: '/user/statistics/accuracy/',
+    url: '/mail/statistics/accuracy/',
     method: 'get',
     params,
   })

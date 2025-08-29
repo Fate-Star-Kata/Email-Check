@@ -78,6 +78,7 @@ export interface HistoryRecord {
   sender_email: string
   subject: string
   isFavorite: boolean
+  favorite_id: number
 }
 
 export interface HistoryDetailRecord {
@@ -159,18 +160,42 @@ export interface UserStatisticsParams {
   end_date?: string
 }
 
+export interface BasicStats {
+  id: number
+  user: string
+  total_detections: number
+  spam_detected: number
+  normal_detected: number
+  favorite_count: number
+  accuracy_rate: number
+  last_detection_time: string
+  created_at: string
+  updated_at: string
+}
+
+export interface DailyStats {
+  date: string
+  total_detections: number
+  spam_count: number
+  normal_count: number
+  suspicious_count: number
+  accuracy_rate: number
+  favorite_count: number
+}
+
+export interface MonthlyStats {
+  month: string
+  total: number
+  spam: number
+  normal: number
+}
+
 export interface UserStatisticsData {
-  monthly_stats: {
-    month: string
-    total_detections: number
-    spam_count: number
-    legitimate_count: number
-  }[]
+  basic_stats: BasicStats
+  daily_stats: DailyStats[]
+  monthly_stats: MonthlyStats[]
   risk_factors_stats: Record<string, number>
-  accuracy_trend: {
-    date: string
-    accuracy: number
-  }[]
+  favorite_count: number
 }
 
 // 管理员仪表板类型

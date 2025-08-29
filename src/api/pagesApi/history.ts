@@ -105,12 +105,12 @@ export function addFavorite(data: AddFavoriteRequest): Promise<BaseResponse<any>
 }
 
 /**
- * 通过记录ID删除收藏
- * 根据检测记录ID删除对应的收藏记录
+ * 删除收藏
+ * 从收藏列表中删除指定记录
  */
-export function removeFavoriteByRecordId(recordId: number): Promise<BaseResponse<any>> {
+export function deleteFavorite(favoriteId: number): Promise<BaseResponse<any>> {
   return serviceAxios({
-    url: `/mail/favorites/by-record/${recordId}/`,
+    url: `/mail/favorites/${favoriteId}/`,
     method: 'delete',
   })
 }

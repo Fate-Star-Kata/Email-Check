@@ -3,6 +3,8 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 导入Element Plus
 import ElementPlus from 'element-plus'
 import { createApp } from 'vue'
+// 导入VChart
+import VChart from 'vue-echarts'
 
 // 导入i18n配置
 import i18n, { setupI18n } from '@/i18n'
@@ -46,6 +48,9 @@ app.use(i18n)
 
 // 使用Element Plus
 app.use(ElementPlus)
+
+// 注册VChart组件
+app.component('VChart', VChart)
 
 // 注册Element Plus图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

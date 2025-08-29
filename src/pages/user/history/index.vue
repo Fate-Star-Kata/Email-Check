@@ -81,10 +81,9 @@
                                 </div>
                                 <p class="text-base-content/70 mb-2">发件人：{{ record.sender_email }}</p>
                                 <p class="text-sm text-base-content/60 mb-3">{{ record.email_content.substring(0, 100)
-                                    }}...</p>
+                                }}...</p>
                                 <div class="flex items-center gap-4 text-sm text-base-content/60">
                                     <span>检测时间：{{ formatDate(record.created_at) }}</span>
-                                    <span v-if="record.isFavorite" class="text-warning">⭐ 已收藏</span>
                                 </div>
                             </div>
                             <div class="flex flex-col gap-2">
@@ -325,7 +324,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { getDetectionHistory, getHistoryDetail, deleteHistoryRecord, addFavorite, removeFavoriteByRecordId } from '@/api/pagesApi/history'
+import { getDetectionHistory, getHistoryDetail, deleteHistoryRecord, addFavorite, deleteFavorite } from '@/api/pagesApi/history'
 import type { HistoryRecord, HistoryDetailRecord, HistoryQueryParams, AddFavoriteRequest } from '@/types/apis/pageApis_T'
 
 // 筛选条件
@@ -370,8 +369,6 @@ const fetchHistoryRecords = async () => {
             params.result = resultFilter.value as 'spam' | 'legitimate'
         }
 
-
-
         const response = await getDetectionHistory(params)
         if (response.code === 200) {
             // 映射后端数据字段到前端期望的格式
@@ -383,7 +380,8 @@ const fetchHistoryRecords = async () => {
                 detection_result: record.detection_result === 'normal' ? 'legitimate' : record.detection_result,
                 confidence_score: record.confidence_score,
                 created_at: record.created_at,
-                isFavorite: record.is_favorited || false // 使用后端的is_favorited字段
+                isFavorite: record.is_favorited || false, // 使用后端的is_favorited字段
+                favorite_id: record.favorite_id || 0 // 使用后端的favorite_id字段
             }))
             totalRecords.value = response.data.total
         } else {
@@ -469,13 +467,6 @@ const formatDate = (dateString: string) => {
     })
 }
 
-// 获取特征颜色
-const getFeatureColor = (score: number) => {
-    if (score > 0.7) return 'text-error'
-    if (score > 0.3) return 'text-warning'
-    return 'text-success'
-}
-
 // 查看详情
 const viewDetails = async (record: HistoryRecord) => {
     try {
@@ -505,8 +496,9 @@ const closeDetailModal = () => {
 const toggleFavorite = async (record: HistoryRecord) => {
     try {
         if (record.isFavorite) {
+            console.log(record);
             // 取消收藏逻辑
-            const response = await removeFavoriteByRecordId(record.id)
+            const response = await deleteFavorite(record.favorite_id)
             if (response.code === 200) {
                 record.isFavorite = false
                 console.log('已从收藏中移除')
